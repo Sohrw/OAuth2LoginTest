@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- your head elements here -->
+</head>
+<body>
+
+<!-- Checking if the user is logged in -->
+<div th:if="${userName}">
+    Logged in as : <span th:text="${userName}"></span>
+    <a href="/logout" class="btn btn-info active" role="button">Logout</a>
+</div>
+
+<!-- If the user is not logged in -->
+<div th:unless="${userName}">
+    <a href="/oauth2/authorization/google" class="btn btn-success active" role="button">Google Login</a>
+</div>
+
+</body>
+</html>
