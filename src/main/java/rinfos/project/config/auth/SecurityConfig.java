@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+import rinfos.project.config.auth.handler.UserDeniedHandler;
 import rinfos.project.domain.Role;
 
 @RequiredArgsConstructor
@@ -24,14 +25,15 @@ public class SecurityConfig {
                         (HeadersConfigurer.FrameOptionsConfig::disable)))
                 .authorizeRequests()
                 .requestMatchers("/", "/css/**", "/images/**", "/js/**", "/h2-console/**").permitAll()
-                .requestMatchers("/api/v1/**").hasRole(Role.USER.name())
                 .anyRequest().authenticated()
                 .and()
                 .logout((httpSecurityLogoutConfigurer -> httpSecurityLogoutConfigurer.logoutSuccessUrl("/")))
                 .oauth2Login((httpSecurityOAuth2LoginConfigurer ->
                         httpSecurityOAuth2LoginConfigurer.userInfoEndpoint(userInfoEndpointConfig ->
-                                userInfoEndpointConfig.userService(customOAuth2UserService))
-                ));
+                                userInfoEndpointConfig.userService(customOAuth2UserService))))
+                .exceptionHandling(httpSecurityExceptionHandlingConfigurer ->
+                        httpSecurityExceptionHandlingConfigurer.accessDeniedHandler(new UserDeniedHandler()))
+        ;
 
 
         return http.build();

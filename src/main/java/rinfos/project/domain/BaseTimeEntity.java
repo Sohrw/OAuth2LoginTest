@@ -9,6 +9,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Getter
 @MappedSuperclass
@@ -22,4 +23,11 @@ public abstract class BaseTimeEntity {
     @LastModifiedDate
     private LocalDateTime modifiedDate;
 
+    public String getCreatedDate() {
+        return createdDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-ss"));
+    }
+
+    public String getModifiedDate() {
+        return modifiedDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-ss"));
+    }
 }

@@ -7,10 +7,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import rinfos.project.domain.BaseTimeEntity;
 import rinfos.project.domain.Role;
+import rinfos.project.domain.post.Post;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
 @Entity
+@Table(name = "app_user")
 public class User extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,6 +33,9 @@ public class User extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
+
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
+    private List<Post> posts;
 
     @Builder
     public User(String name, String email, String picture, Role role) {
